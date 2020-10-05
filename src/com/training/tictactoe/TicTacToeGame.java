@@ -93,6 +93,23 @@ public class TicTacToeGame {
 		}
 
 	}
+	// computerMove
+	private void makeComputerMove(Scanner sc) {
+		int position = (int)Math.floor(Math.random()*100)%9+1;
+		if (position < 0 || position > 9) {
+			System.out.println("Enter a valid position :");
+			makeComputerMove(sc);
+		} else if (isFree[position]) {
+			System.out.println("The position is free to move :");
+			board[position] = computerLetter;
+			isFree[position] = false;
+			printBoard(board);
+		} else {
+			System.out.println("The position is occupied :");
+			makeComputerMove(sc);
+		}
+
+	}
 	//Winning Condition
 	private boolean isWin(char ch) {
 		boolean b=false;
@@ -123,8 +140,11 @@ public class TicTacToeGame {
 		TTTG.fillBoard();
 		TTTG.firstTurn(sc);
 		TTTG.makePlayerMove(sc);
+		TTTG.makeComputerMove(sc);
 		TTTG.makePlayerMove(sc);
+		TTTG.makeComputerMove(sc);
 		TTTG.makePlayerMove(sc);
+		TTTG.makeComputerMove(sc);
 		System.out.println(TTTG.isWin(TTTG.playerLetter));
 		sc.close();
 	}
