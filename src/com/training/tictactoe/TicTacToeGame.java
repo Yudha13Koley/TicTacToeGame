@@ -11,7 +11,7 @@ public class TicTacToeGame {
 	// constructor
 	public TicTacToeGame() {
 		board = new char[10];
-		isFree=new boolean[10];
+		isFree = new boolean[10];
 	}
 
 	// fill the board with empty space
@@ -24,11 +24,26 @@ public class TicTacToeGame {
 		}
 	}
 
+	// Heads or Tails
+	public void firstTurn(Scanner sc) {
+		System.out.println("Enter Head or Tail :");
+		String str = sc.next();
+		String toss = Math.random() < 0.5 ? "Head" : "Tail";
+		if (str.equalsIgnoreCase(toss)) {
+			System.out.println("User Goes First !");
+			allowPlayer(sc);
+		} else {
+			System.out.println("Computer Goes First !");
+			computerLetter = 'X';
+			playerLetter = 'O';
+		}
+	}
+
 	// player choice input
 	private void allowPlayer(Scanner sc) {
 		System.out.println("Input Your Choice X or O");
 		char c = sc.next().toUpperCase().charAt(0);
-		if(c!='O'&& c!='X')
+		if (c != 'O' && c != 'X')
 			allowPlayer(sc);
 		playerLetter = c;
 		computerLetter = playerLetter == 'X' ? 'O' : 'X';
@@ -46,6 +61,7 @@ public class TicTacToeGame {
 			}
 		}
 	}
+
 	// Overload printBoard
 	private void printBoard(char[] arr) {
 		for (int i = 1; i < arr.length; i++) {
@@ -58,7 +74,8 @@ public class TicTacToeGame {
 			}
 		}
 	}
-	//print free space
+
+	// print free space
 	private void printSpace(boolean[] arr) {
 		for (int i = 1; i < arr.length; i++) {
 			if (i % 3 == 1 || i % 3 == 2)
@@ -70,28 +87,25 @@ public class TicTacToeGame {
 			}
 		}
 	}
-	
-	//playerMove
+
+	// playerMove
 	private void makePlayerMove(Scanner sc) {
 		System.out.println("Enter a Position player want to move(1 to 9) : ");
-		int position =sc.nextInt();
-		if(position<0||position>9)
-		{
+		int position = sc.nextInt();
+		if (position < 0 || position > 9) {
 			System.out.println("Enter a valid position :");
 			makePlayerMove(sc);
-		}
-		else if(isFree[position]) {
+		} else if (isFree[position]) {
 			System.out.println("The position is free to move :");
-			board[position]=playerLetter;
-			isFree[position]=false;
+			board[position] = playerLetter;
+			isFree[position] = false;
 			printBoard(board);
 			printSpace(isFree);
-		}
-		else {
+		} else {
 			System.out.println("The position is occupied :");
 			makePlayerMove(sc);
 		}
-		
+
 	}
 
 	// main
@@ -100,9 +114,7 @@ public class TicTacToeGame {
 		Scanner sc = new Scanner(System.in);
 		TicTacToeGame TTTG = new TicTacToeGame();
 		TTTG.fillBoard();
-		TTTG.allowPlayer(sc);
-		TTTG.printBoard();
-		TTTG.makePlayerMove(sc);
+		TTTG.firstTurn(sc);
 		sc.close();
 	}
 }
