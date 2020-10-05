@@ -75,19 +75,6 @@ public class TicTacToeGame {
 		}
 	}
 
-	// print free space
-	private void printSpace(boolean[] arr) {
-		for (int i = 1; i < arr.length; i++) {
-			if (i % 3 == 1 || i % 3 == 2)
-				System.out.print(arr[i] + "  | ");
-			if (i % 3 == 0) {
-				System.out.println(arr[i]);
-				if (i != arr.length - 1)
-					System.out.println("---------------------");
-			}
-		}
-	}
-
 	// playerMove
 	private void makePlayerMove(Scanner sc) {
 		System.out.println("Enter a Position player want to move(1 to 9) : ");
@@ -100,12 +87,32 @@ public class TicTacToeGame {
 			board[position] = playerLetter;
 			isFree[position] = false;
 			printBoard(board);
-			printSpace(isFree);
 		} else {
 			System.out.println("The position is occupied :");
 			makePlayerMove(sc);
 		}
 
+	}
+	//Winning Condition
+	private boolean isWin(char ch) {
+		boolean b=false;
+	if(board[1]==board[2] &&board[2]==board[3]&&board[1]==ch)
+		return true;
+	if(board[4]==board[5] &&board[5]==board[6]&&board[4]==ch)
+		return true;
+	if(board[7]==board[8] &&board[8]==board[9]&&board[7]==ch)
+		return true;
+	if(board[1]==board[4] &&board[4]==board[7]&&board[1]==ch)
+		return true;
+	if(board[2]==board[5] &&board[5]==board[8]&&board[2]==ch)
+		return true;
+	if(board[3]==board[6] &&board[6]==board[9]&&board[3]==ch)
+		return true;
+	if(board[1]==board[5] &&board[5]==board[9]&&board[1]==ch)
+		return true;
+	if(board[3]==board[5] &&board[5]==board[7]&&board[3]==ch)
+		return true;
+	return false;
 	}
 
 	// main
@@ -115,6 +122,10 @@ public class TicTacToeGame {
 		TicTacToeGame TTTG = new TicTacToeGame();
 		TTTG.fillBoard();
 		TTTG.firstTurn(sc);
+		TTTG.makePlayerMove(sc);
+		TTTG.makePlayerMove(sc);
+		TTTG.makePlayerMove(sc);
+		System.out.println(TTTG.isWin(TTTG.playerLetter));
 		sc.close();
 	}
 }
