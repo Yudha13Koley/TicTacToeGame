@@ -58,6 +58,19 @@ public class TicTacToeGame {
 			}
 		}
 	}
+	//print free space
+	private void printSpace(boolean[] arr) {
+		for (int i = 1; i < arr.length; i++) {
+			if (i % 3 == 1 || i % 3 == 2)
+				System.out.print(arr[i] + "  | ");
+			if (i % 3 == 0) {
+				System.out.println(arr[i]);
+				if (i != arr.length - 1)
+					System.out.println("---------------------");
+			}
+		}
+	}
+	
 	//playerMove
 	private void makePlayerMove(Scanner sc) {
 		System.out.println("Enter a Position player want to move(1 to 9) : ");
@@ -71,6 +84,8 @@ public class TicTacToeGame {
 			System.out.println("The position is free to move :");
 			board[position]=playerLetter;
 			isFree[position]=false;
+			printBoard(board);
+			printSpace(isFree);
 		}
 		else {
 			System.out.println("The position is occupied :");
