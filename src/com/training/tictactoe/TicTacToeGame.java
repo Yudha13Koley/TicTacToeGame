@@ -87,7 +87,7 @@ public class TicTacToeGame {
 	}
 
 	// computerMove
-	private boolean isWinningMove(int position,char pos) {
+	private boolean isWinningMove(int position, char pos) {
 		if (position < 0 || position > 9) {
 			System.out.println("Enter a valid position :");
 			return false;
@@ -108,15 +108,15 @@ public class TicTacToeGame {
 		boolean b;
 		int winningPos = 0;
 		for (int i = 1; i < board.length; i++) {
-			b = isWinningMove(i,computerLetter);
+			b = isWinningMove(i, computerLetter);
 			if (b) {
 				winningPos = i;
 				break;
 			}
 		}
-		if(winningPos==0) {
+		if (winningPos == 0) {
 			for (int i = 1; i < board.length; i++) {
-				b = isWinningMove(i,playerLetter);
+				b = isWinningMove(i, playerLetter);
 				if (b) {
 					winningPos = i;
 					break;
@@ -184,36 +184,51 @@ public class TicTacToeGame {
 
 	// main
 	public static void main(String[] args) {
-		System.out.println("Welcome to Tic Tac Toe Game :");
-		Scanner sc = new Scanner(System.in);
-		TicTacToeGame TTTG = new TicTacToeGame();
-		TTTG.fillBoard();
-		TTTG.firstTurn(sc);
 		while (true) {
-			if (TTTG.isPlayerTurn) {
-				TTTG.makePlayerMove(sc);
-				if (TTTG.isWin(TTTG.playerLetter)) {
-					System.out.println("Player Wins !");
-					break;
+			System.out.println("Welcome to Tic Tac Toe Game :");
+			Scanner sc = new Scanner(System.in);
+			TicTacToeGame TTTG = new TicTacToeGame();
+			TTTG.fillBoard();
+			TTTG.firstTurn(sc);
+			while (true) {
+				if (TTTG.isPlayerTurn) {
+					TTTG.makePlayerMove(sc);
+					if (TTTG.isWin(TTTG.playerLetter)) {
+						System.out.println("Player Wins !");
+						break;
+					}
+				} else {
+					TTTG.makeSmartComputerMove();
+					;
+					if (TTTG.isWin(TTTG.computerLetter)) {
+						System.out.println("Computer Wins !");
+						break;
+					}
 				}
-			} else {
-				TTTG.makeSmartComputerMove();
-				;
-				if (TTTG.isWin(TTTG.computerLetter)) {
-					System.out.println("Computer Wins !");
+				int count = 0;
+				for (int i = 1; i < 10; i++) {
+					if (TTTG.isFree[i] == false)
+						count++;
+				}
+				if (count == 9) {
+					System.out.println("Draw");
 					break;
 				}
 			}
-			int count = 0;
-			for (int i = 1; i < 10; i++) {
-				if (TTTG.isFree[i] == false)
-					count++;
-			}
-			if (count == 9) {
-				System.out.println("Draw");
+			boolean b = playAnotherGame(sc);
+			if (!b) {
+				sc.close();
+				System.out.println("Game Ends !");
 				break;
 			}
 		}
-		sc.close();
+	}
+
+	private static boolean playAnotherGame(Scanner sc) {
+		System.out.println("Enter Yes To Play Anothe game : Enter Anything Other Than Yes to Exit : ");
+		String str = sc.next();
+		if (str.equalsIgnoreCase("YES"))
+			return true;
+		return false;
 	}
 }
