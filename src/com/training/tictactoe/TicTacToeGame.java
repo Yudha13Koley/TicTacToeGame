@@ -33,12 +33,12 @@ public class TicTacToeGame {
 		if (str.equalsIgnoreCase(toss)) {
 			System.out.println("User Goes First !");
 			allowPlayer(sc);
-			isPlayerTurn=true;
+			isPlayerTurn = true;
 		} else {
 			System.out.println("Computer Goes First !");
 			computerLetter = 'X';
 			playerLetter = 'O';
-			isPlayerTurn=false;
+			isPlayerTurn = false;
 		}
 	}
 
@@ -78,13 +78,14 @@ public class TicTacToeGame {
 			isFree[position] = false;
 			System.out.println("Player Move : ");
 			printBoard(board);
-			isPlayerTurn=false;
+			isPlayerTurn = false;
 		} else {
 			System.out.println("The position is occupied :");
 			makePlayerMove(sc);
 		}
 
 	}
+
 	// computerMove
 	private boolean isWinningMove(int position) {
 		if (position < 0 || position > 9) {
@@ -92,63 +93,82 @@ public class TicTacToeGame {
 			return false;
 		} else if (isFree[position]) {
 			char c = board[position];
-			board[position]=playerLetter;
-			boolean b= isWin(playerLetter);
-			board[position]=c;
-			return b;
+			board[position] = playerLetter;
+			boolean b = isWin(playerLetter);
+			board[position] = c;
+			board[position] = computerLetter;
+			boolean d = isWin(computerLetter);
+			board[position] = c;
+			if (b || d)
+				return true;
+			else
+				return false;
 		} else {
 			return false;
 		}
 
 	}
-	//Blocking Player By computer
+
+	// Blocking Player By computer
 	private void makeSmartComputerMove() {
 		boolean b;
-		int winningPos=0;
-		for(int i=1;i<board.length;i++)
-		{
-			b=isWinningMove(i);
-			if(b)
-			{
-				winningPos=i;
+		int winningPos = 0;
+		for (int i = 1; i < board.length; i++) {
+			b = isWinningMove(i);
+			if (b) {
+				winningPos = i;
 				break;
 			}
 		}
-		if(winningPos==0)
-			winningPos=(int) (Math.floor(Math.random()*100)%9+1);
+		if (winningPos == 0)
+		{
+			winningPos=getPosForWin();
+			if(winningPos==0)
+				winningPos = (int) (Math.floor(Math.random() * 100) % 9 + 1);
+		}
 		if (winningPos < 0 || winningPos > 9) {
 			System.out.println("Enter a valid position :");
 			makeSmartComputerMove();
 		} else if (isFree[winningPos]) {
-			board[winningPos]=computerLetter;
-			isFree[winningPos]=false;
+			board[winningPos] = computerLetter;
+			isFree[winningPos] = false;
 			System.out.println("Computer Move :");
 			printBoard(board);
-			isPlayerTurn=true;
+			isPlayerTurn = true;
 		} else {
 			makeSmartComputerMove();
 		}
-			
+
 	}
-	//Winning Condition
+
+	private int getPosForWin() {
+		int[]a= {1,3,7,9};
+		for(int i:a) {
+			if(isFree[i])
+				return i;
+		}
+		return 0;
+	}
+
+	// Winning Condition
 	private boolean isWin(char ch) {
-	if(board[1]==board[2] &&board[2]==board[3]&&board[1]==ch)
-		return true;
-	if(board[4]==board[5] &&board[5]==board[6]&&board[4]==ch)
-		return true;
-	if(board[7]==board[8] &&board[8]==board[9]&&board[7]==ch)
-		return true;
-	if(board[1]==board[4] &&board[4]==board[7]&&board[1]==ch)
-		return true;
-	if(board[2]==board[5] &&board[5]==board[8]&&board[2]==ch)
-		return true;
-	if(board[3]==board[6] &&board[6]==board[9]&&board[3]==ch)
-		return true;
-	if(board[1]==board[5] &&board[5]==board[9]&&board[1]==ch)
-		return true;
-	if(board[3]==board[5] &&board[5]==board[7]&&board[3]==ch)
-		return true;
-	return false;
+		if (board[1] == board[2] && board[2] == board[3] && board[1] == ch)
+			return true;
+		if (board[4] == board[5] && board[5] == board[6] && board[4] == ch)
+			return true;
+		if (board[7] == board[8] && board[8] == board[9] && board[7] == ch)
+			return true;
+		if (board[1] == board[4] && board[4] == board[7] && board[1] == ch)
+			return true;
+		if (board[2] == board[5] && board[5] == board[8] && board[2] == ch)
+			return true;
+		if (board[3] == board[6] && board[6] == board[9] && board[3] == ch)
+			return true;
+		if (board[1] == board[5] && board[5] == board[9] && board[1] == ch)
+			return true;
+		if (board[3] == board[5] && board[5] == board[7] && board[3] == ch)
+			return true;
+		return false;
 	}
 
 	// main
@@ -158,34 +178,30 @@ public class TicTacToeGame {
 		TicTacToeGame TTTG = new TicTacToeGame();
 		TTTG.fillBoard();
 		TTTG.firstTurn(sc);
-		while(true) {
-		if(TTTG.isPlayerTurn) {
-		TTTG.makePlayerMove(sc);
-		if(TTTG.isWin(TTTG.playerLetter))
-		{
-			System.out.println("Player Wins !");
-			break;
-		}
-		}
-		else {
-		TTTG.makeSmartComputerMove();;
-		if(TTTG.isWin(TTTG.computerLetter))
-		{
-			System.out.println("Computer Wins !");
-			break;
-		}
-		}
-		int count=0;
-		for(int i=1;i<10;i++)
-		{
-			if(TTTG.isFree[i]==false)
-				count++;
-		}
-		if(count==9)
-		{
-			System.out.println("Draw");
-			break;
-		}
+		while (true) {
+			if (TTTG.isPlayerTurn) {
+				TTTG.makePlayerMove(sc);
+				if (TTTG.isWin(TTTG.playerLetter)) {
+					System.out.println("Player Wins !");
+					break;
+				}
+			} else {
+				TTTG.makeSmartComputerMove();
+				;
+				if (TTTG.isWin(TTTG.computerLetter)) {
+					System.out.println("Computer Wins !");
+					break;
+				}
+			}
+			int count = 0;
+			for (int i = 1; i < 10; i++) {
+				if (TTTG.isFree[i] == false)
+					count++;
+			}
+			if (count == 9) {
+				System.out.println("Draw");
+				break;
+			}
 		}
 		sc.close();
 	}
