@@ -87,22 +87,16 @@ public class TicTacToeGame {
 	}
 
 	// computerMove
-	private boolean isWinningMove(int position) {
+	private boolean isWinningMove(int position,char pos) {
 		if (position < 0 || position > 9) {
 			System.out.println("Enter a valid position :");
 			return false;
 		} else if (isFree[position]) {
 			char c = board[position];
-			board[position] = playerLetter;
-			boolean b = isWin(playerLetter);
+			board[position] = pos;
+			boolean b = isWin(pos);
 			board[position] = c;
-			board[position] = computerLetter;
-			boolean d = isWin(computerLetter);
-			board[position] = c;
-			if (b || d)
-				return true;
-			else
-				return false;
+			return b;
 		} else {
 			return false;
 		}
@@ -114,10 +108,19 @@ public class TicTacToeGame {
 		boolean b;
 		int winningPos = 0;
 		for (int i = 1; i < board.length; i++) {
-			b = isWinningMove(i);
+			b = isWinningMove(i,computerLetter);
 			if (b) {
 				winningPos = i;
 				break;
+			}
+		}
+		if(winningPos==0) {
+			for (int i = 1; i < board.length; i++) {
+				b = isWinningMove(i,playerLetter);
+				if (b) {
+					winningPos = i;
+					break;
+				}
 			}
 		}
 		if (winningPos == 0) {
