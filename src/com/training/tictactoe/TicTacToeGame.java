@@ -120,10 +120,9 @@ public class TicTacToeGame {
 				break;
 			}
 		}
-		if (winningPos == 0)
-		{
-			winningPos=getPosForWin();
-			if(winningPos==0)
+		if (winningPos == 0) {
+			winningPos = getPosForWin();
+			if (winningPos == 0)
 				winningPos = (int) (Math.floor(Math.random() * 100) % 9 + 1);
 		}
 		if (winningPos < 0 || winningPos > 9) {
@@ -142,10 +141,19 @@ public class TicTacToeGame {
 	}
 
 	private int getPosForWin() {
-		int[]a= {1,3,7,9};
-		for(int i:a) {
-			if(isFree[i])
+		int[] a = { 1, 3, 7, 9 };
+		int[] b = { 2, 4, 6, 8 };
+		for (int i : a) {
+			if (isFree[i])
 				return i;
+		}
+		if (isFree[5]) {
+			return 5;
+		} else {
+			for (int i : b) {
+				if (isFree[i])
+					return i;
+			}
 		}
 		return 0;
 	}
